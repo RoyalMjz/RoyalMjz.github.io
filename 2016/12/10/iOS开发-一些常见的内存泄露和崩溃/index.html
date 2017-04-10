@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>iOS开发 一些常见的内存泄露和崩溃 | RoyalMjz</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="项目(ARC)开发过程中，难免遇到内存泄漏和崩溃，特在这整理一下。（如果本文中有讲述不对或者不准确的地方欢迎大家提出来）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS开发 一些常见的内存泄露和崩溃">
+<meta property="og:url" content="http://RoyalMjz.github.io/2016/12/10/iOS开发-一些常见的内存泄露和崩溃/index.html">
+<meta property="og:site_name" content="RoyalMjz">
+<meta property="og:description" content="项目(ARC)开发过程中，难免遇到内存泄漏和崩溃，特在这整理一下。（如果本文中有讲述不对或者不准确的地方欢迎大家提出来）">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/665046-e3919092dd9a762d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/665046-1be54b617dc8ead4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/665046-d114eb3c1c1cca85.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/665046-5d52e7ad3cfcc5d7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/665046-79dc5dc9583b2bf0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/665046-088dca316eb6b758.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/665046-5e76e0a7f7b41079.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/665046-a9fb451f172ea891.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/665046-e8c122a565c853a1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-04-10T05:48:53.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS开发 一些常见的内存泄露和崩溃">
+<meta name="twitter:description" content="项目(ARC)开发过程中，难免遇到内存泄漏和崩溃，特在这整理一下。（如果本文中有讲述不对或者不准确的地方欢迎大家提出来）">
+  
+    <link rel="alternative" href="/atom.xml" title="RoyalMjz" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/assets/blogImg/me.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">RoyalMjz</a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/RoyalMjz" title="github">github</a>
+					        
+								<a class="mail" target="_blank" href="/Royal7Mjz@gmail.com" title="mail">mail</a>
+					        
+								<a class="weibo" target="_blank" href="http://weibo.com/u/3810450792" title="weibo">weibo</a>
+					        
+								<a class="twitter" target="_blank" href="https://twitter.com/Royal_MJZ" title="twitter">twitter</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/ACM/" style="font-size: 20px;">ACM</a> <a href="/tags/C-C/" style="font-size: 20px;">C/C++</a> <a href="/tags/iOS/" style="font-size: 15px;">iOS</a> <a href="/tags/macOS-OS-X/" style="font-size: 10px;">macOS(OS-X)</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+				
+				<section class="switch-part switch-part3">
+				
+					<div id="js-aboutme">An iOS developer who graduated from Harbin University of Commerce</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">RoyalMjz</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="/assets/blogImg/me.jpg" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">RoyalMjz</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/RoyalMjz" title="github">github</a>
+			        
+						<a class="mail" target="_blank" href="/Royal7Mjz@gmail.com" title="mail">mail</a>
+			        
+						<a class="weibo" target="_blank" href="http://weibo.com/u/3810450792" title="weibo">weibo</a>
+			        
+						<a class="twitter" target="_blank" href="https://twitter.com/Royal_MJZ" title="twitter">twitter</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-iOS开发-一些常见的内存泄露和崩溃" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/12/10/iOS开发-一些常见的内存泄露和崩溃/" class="article-date">
+  	<time datetime="2016-12-09T16:22:00.000Z" itemprop="datePublished">2016-12-10</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      iOS开发 一些常见的内存泄露和崩溃
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+	</div>
+
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>项目(ARC)开发过程中，难免遇到内存泄漏和崩溃，特在这整理一下。<br>（如果本文中有讲述不对或者不准确的地方欢迎大家提出来）         </p>
+</blockquote>
+<a id="more"></a>
+<h1 id="u4E00_u3001_u5185_u5B58_u6CC4_u6F0F"><a href="#u4E00_u3001_u5185_u5B58_u6CC4_u6F0F" class="headerlink" title="一、内存泄漏"></a>一、内存泄漏</h1><h3 id="1_u3001EXC_BAD_ACCESS_/_KERN_INVALID_ADDRESS"><a href="#1_u3001EXC_BAD_ACCESS_/_KERN_INVALID_ADDRESS" class="headerlink" title="1、EXC_BAD_ACCESS / KERN_INVALID_ADDRESS"></a>1、EXC_BAD_ACCESS / KERN_INVALID_ADDRESS</h3><p><img src="http://upload-images.jianshu.io/upload_images/665046-e3919092dd9a762d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="内存泄漏"></p>
+<p>公司的项目接入了三方崩溃报告，最近出现了<code>EXC_BAD_ACCESS / KERN_INVALID_ADDRESS</code>这样的错误，崩溃报告堆栈信息一大堆，看的头晕。<br><strong><em>How to fix it?</em></strong><br>这个奔溃常见于block的循环引用所造成的内存泄漏</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//一个简单的例子</span></span><br><span class="line">SecondViewController *secondVC = [[SecondViewController alloc] init];</span><br><span class="line">__<span class="keyword">weak</span> __<span class="keyword">typeof</span>(&amp;*<span class="keyword">self</span>)weakSelf = <span class="keyword">self</span>;</span><br><span class="line">[secondVC setChangeLabel:^(<span class="built_in">NSString</span> *text) &#123;</span><br><span class="line">       weakSelf<span class="variable">.text</span> = text;</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+<p>我们定义一个<code>wself</code>变量并加上<code>__weak</code>修饰符，在<code>Block</code>中，所有需要<code>self</code>的地方都用<code>wself</code>来替代。这样就不会增加引用计数，所以block持有<code>self</code>对象也就不会造成循环引用，从而造成内存泄漏。</p>
+<p><br></p>
+<h3 id="2_u3001Value_stored_to__u2018dic_u2019_during_its_initialization_is_never_read"><a href="#2_u3001Value_stored_to__u2018dic_u2019_during_its_initialization_is_never_read" class="headerlink" title="2、Value stored to ‘dic’ during its initialization is never read"></a>2、Value stored to ‘dic’ during its initialization is never read</h3><hr>
+<p><img src="http://upload-images.jianshu.io/upload_images/665046-1be54b617dc8ead4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="内存泄漏"></p>
+<p>这个是在测试项目内存泄漏的时候遇到的 <strong>(Product-&gt;Analyze)</strong></p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//内存泄漏代码</span></span><br><span class="line"><span class="built_in">NSDictory</span> *dic = [[<span class="built_in">NSDictory</span> alloc] init];</span><br><span class="line">dic = &#123;<span class="string">@"0"</span>,<span class="string">@"1"</span>,<span class="string">@"2"</span>&#125;;</span><br></pre></td></tr></table></figure>
+<p>这么写真是太逗了，像什么<code>NSArray</code>，<code>NSString</code>等等都有可能遇到这种低级错误</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//这么写就好了啊</span></span><br><span class="line"><span class="built_in">NSDictory</span> *dic = &#123;<span class="string">@"0"</span>,<span class="string">@"1"</span>,<span class="string">@"2"</span>&#125;;</span><br></pre></td></tr></table></figure>
+<p><br></p>
+<h3 id="3_u3001Potential_leak_of_an_object_stored_into__u2018string_u2019"><a href="#3_u3001Potential_leak_of_an_object_stored_into__u2018string_u2019" class="headerlink" title="3、Potential leak of an object stored into ‘string’"></a>3、Potential leak of an object stored into ‘string’</h3><hr>
+<p><img src="http://upload-images.jianshu.io/upload_images/665046-d114eb3c1c1cca85.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="内存泄漏"></p>
+<p>这个同样是在测试项目内存泄漏的时候遇到的 <strong>(Product-&gt;Analyze)</strong><br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//why crash</span></span><br><span class="line">+ (<span class="built_in">NSString</span> *)uuidString &#123; </span><br><span class="line"></span><br><span class="line">  <span class="built_in">CFUUIDRef</span> theUniqueString = <span class="built_in">CFUUIDCreate</span>(<span class="literal">NULL</span>);</span><br><span class="line">  <span class="built_in">CFStringRef</span> string = <span class="built_in">CFUUIDCreateString</span>(<span class="literal">NULL</span>, theUniqueString);</span><br><span class="line">  <span class="built_in">CFRelease</span>(theUniqueString);</span><br><span class="line">  <span class="keyword">return</span>(__bridge<span class="built_in">NSString</span> *)string;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这个是没有release对象造成的。<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//fix it</span></span><br><span class="line">+ (<span class="built_in">NSString</span>*)uuidString &#123;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">CFUUIDReftheUniqueString</span> =<span class="built_in">CFUUIDCreate</span>(<span class="literal">NULL</span>);</span><br><span class="line">  <span class="built_in">CFStringRefstring</span> =<span class="built_in">CFUUIDCreateString</span>(<span class="literal">NULL</span>, theUniqueString);</span><br><span class="line">  <span class="built_in">NSString</span>*tmpString = (__bridge<span class="built_in">NSString</span>*)string;</span><br><span class="line">  <span class="built_in">CFRelease</span>(theUniqueString);</span><br><span class="line">  <span class="built_in">CFRelease</span>(string);</span><br><span class="line">  returntmpString;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>像什么<code>subImageRef</code>, <code>CGGradientRef</code>,<code>CTFrameRef</code>等等都有可能遇到这种错误。</p>
+<p><br></p>
+<h1 id="u4E8C_u3001_u5D29_u6E83"><a href="#u4E8C_u3001_u5D29_u6E83" class="headerlink" title="二、崩溃"></a>二、崩溃</h1><h3 id="1_u3001"><a href="#1_u3001" class="headerlink" title="1、"></a>1、</h3><p><img src="http://upload-images.jianshu.io/upload_images/665046-5d52e7ad3cfcc5d7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="僵尸错误"></p>
+<p>我们可以打开<code>Product-&gt;Scheme-&gt;Edit Scheme-&gt;Run-&gt;Diagnostics</code>将<code>Enable Zombie Objects</code>勾选上,然后打全局断点进行测试，如果复现了这个崩溃，控制台会输出错误信息，例如<code>-[XXXXX getObjectAt:]: message sent to deallocated instance 0x11562a300</code>。</p>
+<h3 id="2_u3001"><a href="#2_u3001" class="headerlink" title="2、"></a>2、</h3><p><img src="http://upload-images.jianshu.io/upload_images/665046-79dc5dc9583b2bf0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="插入数组的对象不能为空"></p>
+<p>我们可以在添加到数组之前做一下判断<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (nameStr == nil || [nameStr <span class="string">isKindOfClass:</span>[NSNull <span class="class"><span class="keyword">class</span>]])  &#123;</span></span><br><span class="line">    [nameArr <span class="string">addObject:</span>@<span class="string">"匿名用户"</span>];</span><br><span class="line">&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">    [nameArr <span class="string">addObject:</span>nameStr];</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="3_u3001"><a href="#3_u3001" class="headerlink" title="3、"></a>3、</h3><p><img src="http://upload-images.jianshu.io/upload_images/665046-088dca316eb6b758.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="空数组越界"><br><img src="http://upload-images.jianshu.io/upload_images/665046-5e76e0a7f7b41079.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="可变数组越界"></p>
+<p>我们可以自己写一个方法代替系统的获取数组中对象的方法<code>objectAtIndex：</code><br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">id</span>)objectAtIndexCheck:(<span class="built_in">NSUInteger</span>)index&#123;</span><br><span class="line">    <span class="comment">//越界</span></span><br><span class="line">    <span class="keyword">if</span> (index &gt;= [<span class="keyword">self</span> count]) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">id</span> value = [<span class="keyword">self</span> objectAtIndex:index];</span><br><span class="line">    <span class="comment">//对象为空</span></span><br><span class="line">    <span class="keyword">if</span> (value == [<span class="built_in">NSNull</span> null]) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> value;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="4_u3001"><a href="#4_u3001" class="headerlink" title="4、"></a>4、</h3><p><img src="http://upload-images.jianshu.io/upload_images/665046-a9fb451f172ea891.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="崩溃信息"></p>
+<p>1、使用标准的初始化方法：<br>NSDictionary *dictionary ＝[[NSDictionaryalloc] initWithObjectsAndKeys:value1,@”key1”,value2,@”key2”, value3 ,@”value3”,nil];</p>
+<p>2、使用ios6.0以后新支持的初始化方法：<br>NSDictionary *dictionary =@{@”key1” : value1,@”key2” : value2,@”key3” : value3};</p>
+<p>现在我们对value1 value2 value3进行赋值，并把value2设为nil指针:<br>NSString <em>value1 =@”value1”;NSString </em>value2 =nil;NSString *value3 =@”value3”;</p>
+<p>这时如果使用第二种初始化方法，运行程序会发现崩溃，日志如下：</p>
+<figure class="highlight vbnet"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">***</span><br><span class="line">Terminating app due <span class="keyword">to</span> uncaught exception <span class="comment">'NSInvalidArgumentException',</span></span><br><span class="line"> reason: <span class="comment">'***</span></span><br><span class="line"> -[__NSPlaceholderDictionary initWithObjects:forKeys:count:]: attempt <span class="keyword">to</span> insert nil <span class="built_in">object</span> <span class="keyword">from</span> objects[<span class="number">1</span>]<span class="comment">'</span></span><br></pre></td></tr></table></figure>
+<p>也就是说使用这种初始化方法的时候必须保证key跟value都不为nil，因此我们需要在初始化之前对其进行判断，如果为nil就不加入字典。但是如果有需求让value必须为空的时候，可以将value赋值为[NSNull null]<br>这样就可以成功插入字典</p>
+<h3 id="5_u3001"><a href="#5_u3001" class="headerlink" title="5、"></a>5、</h3><p><img src="http://upload-images.jianshu.io/upload_images/665046-e8c122a565c853a1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="崩溃信息"></p>
+<p>[cell setColumnTitle:[homeData objectAtIndex:row]];<br>这里其实是要传NSString类型，而其实返回的是NSArray类型，这个错误不会立即出发，而是过一段时间再出发，所以不好定位。</p>
+<p><br><br>先写这么多，大家遇到的问题欢迎补充。<br><br></p>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>共</p>
+</blockquote>
+<p>同</p>
+</blockquote>
+<p>进</p>
+</blockquote>
+<p>步</p>
+</blockquote>
+<p>O(∩_∩)O</p>
+</blockquote>
+<p><br><br><br></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/02/28/程序猿从入门到放弃/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          程序猿从入门到放弃
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/11/23/那些年-用过的经典App/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">那些年 用过的经典App</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+    <a class="jiathis_button_twitter"></a>
+    <a class="jiathis_button_plus"></a> 
+    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2017 RoyalMjz
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: true
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>
