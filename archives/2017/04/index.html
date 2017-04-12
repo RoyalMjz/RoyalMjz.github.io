@@ -4,18 +4,17 @@
   <meta charset="utf-8">
   
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <title>iOS开发 枚举类型NS_ENUM和NS_OPTIONS的区别 | RoyalMjz</title>
+  <title>Archives: 2017/4 | RoyalMjz</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="NS_ENUM和NS_OPTIONS">
-<meta property="og:type" content="article">
-<meta property="og:title" content="iOS开发 枚举类型NS_ENUM和NS_OPTIONS的区别">
-<meta property="og:url" content="http://RoyalMjz.github.io/2016/06/21/iOS开发-枚举类型NS_ENUM和NS_OPTIONS的区别/index.html">
+  <meta name="description">
+<meta property="og:type" content="website">
+<meta property="og:title" content="RoyalMjz">
+<meta property="og:url" content="http://RoyalMjz.github.io/archives/2017/04/index.html">
 <meta property="og:site_name" content="RoyalMjz">
-<meta property="og:description" content="NS_ENUM和NS_OPTIONS">
-<meta property="og:updated_time" content="2017-04-10T05:07:04.000Z">
+<meta property="og:description">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="iOS开发 枚举类型NS_ENUM和NS_OPTIONS的区别">
-<meta name="twitter:description" content="NS_ENUM和NS_OPTIONS">
+<meta name="twitter:title" content="RoyalMjz">
+<meta name="twitter:description">
   
     <link rel="alternative" href="/atom.xml" title="RoyalMjz" type="application/atom+xml">
   
@@ -173,119 +172,53 @@
 	</div>
 </nav>
 
-      <div class="body-wrap"><article id="post-iOS开发-枚举类型NS_ENUM和NS_OPTIONS的区别" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap">
   
-    <div class="article-meta">
-      <a href="/2016/06/21/iOS开发-枚举类型NS_ENUM和NS_OPTIONS的区别/" class="article-date">
-  	<time datetime="2016-06-21T13:42:00.000Z" itemprop="datePublished">2016-06-21</time>
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2017" class="archive-year">2017</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2017/04/11/Web JS实现页面返回顶部/" class="archive-article-date">
+  	<time datetime="2017-04-11T12:09:00.000Z" itemprop="datePublished">Apr 11</time>
 </a>
-    </div>
+        </div>
+    	 
   
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      iOS开发 枚举类型NS_ENUM和NS_OPTIONS的区别
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2017/04/11/Web JS实现页面返回顶部/">Web JS实现页面返回顶部</a>
     </h1>
   
 
-      </header>
-      
-      <div class="article-info article-info-post">
-        
+        <div class="article-info info-on-right">
+          
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Web/">Web</a></li></ul>
 	</div>
 
-        
+          
 
+        </div>
         <div class="clearfix"></div>
-      </div>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>NS_ENUM和NS_OPTIONS         </p>
-</blockquote>
-<a id="more"></a>
-<blockquote>
-<p>#<em>NS_ENUM</em></p>
-<blockquote>
-<p>通用枚举值</p>
-</blockquote>
-</blockquote>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="built_in">NS_ENUM</span>(<span class="built_in">NSInteger</span>, <span class="built_in">UIControlContentHorizontalAlignment</span>) &#123;</span><br><span class="line">    <span class="built_in">UIControlContentHorizontalAlignmentCenter</span> = <span class="number">0</span>,</span><br><span class="line">    <span class="built_in">UIControlContentHorizontalAlignmentLeft</span>   = <span class="number">1</span>,</span><br><span class="line">    <span class="built_in">UIControlContentHorizontalAlignmentRight</span>  = <span class="number">2</span>,</span><br><span class="line">    <span class="built_in">UIControlContentHorizontalAlignmentFill</span>   = <span class="number">3</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<hr>
-<blockquote>
-<p>#<em>NS_OPTIONS</em></p>
-<blockquote>
-<p>位移相关操作的枚举值</p>
-</blockquote>
-</blockquote>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">typedef</span> <span class="title">NS_OPTIONS</span><span class="params">(NSUInteger, UIControlState)</span> </span>&#123;</span><br><span class="line">    UIControlStateNormal       = <span class="number">0</span>,</span><br><span class="line">    UIControlStateHighlighted  = <span class="number">1</span> &lt;&lt; <span class="number">0</span>,</span><br><span class="line">    UIControlStateDisabled     = <span class="number">1</span> &lt;&lt; <span class="number">1</span>,</span><br><span class="line">    UIControlStateSelected     = <span class="number">1</span> &lt;&lt; <span class="number">2</span>,</span><br><span class="line">    UIControlStateApplication  = <span class="number">0x00FF0000</span>,</span><br><span class="line">    UIControlStateReserved     = <span class="number">0xFF000000</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<hr>
-<ul>
-<li>通常情况下我们用的枚举是<strong>NS_ENUM</strong></li>
-<li>当一个枚举变量可能要代表多个属性的时候，就要用到<strong>NS_OPTIONS</strong>(NS_OPTIONS代表的也是一个值，只不过是两个或多个值按位移后的值)<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">self</span><span class="variable">.tableView</span><span class="variable">.autoresizingMask</span> = <span class="built_in">UIViewAutoresizingFlexibleWidth</span> | <span class="built_in">UIViewAutoresizingFlexibleHeight</span>;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>共</p>
-</blockquote>
-<p>同</p>
-</blockquote>
-<p>进</p>
-</blockquote>
-<p>步</p>
-</blockquote>
-<p>给个喜欢喔O(∩_∩)O</p>
-</blockquote>
-<hr>
-
-      
-    </div>
-    
+    </header>
   </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2016/07/03/iOS开发-Xcode添加PCH文件和常用的宏/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          iOS开发 Xcode添加PCH文件和常用的宏
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2015/10/02/iOS开发 Xcode7免开发者帐号真机调试运行程序/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">iOS开发 Xcode7免开发者帐号真机调试运行程序</div>
-      <strong class="article-nav-caption">></strong>
-    </a>
-  
-</nav>
-
-  
 </article>
+  
+  
+    </div></section>
+  
 
-
-
-
-
-
-
+    
 
 </div>
       <footer id="footer">
@@ -319,8 +252,8 @@
 		mathjax: true,
 		animate: true,
 		isHome: false,
-		isPost: true,
-		isArchive: false,
+		isPost: false,
+		isArchive: true,
 		isTag: false,
 		isCategory: false,
 		open_in_new: true
